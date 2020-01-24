@@ -1,1 +1,2 @@
-print "hello world"
+def main(){
+        print("will work on this later")
