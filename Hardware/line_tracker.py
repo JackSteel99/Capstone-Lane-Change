@@ -51,11 +51,26 @@ GPIO.setup(rightIR, GPIO.IN)
 
 #Check status of left IR sensor
 def leftIRstatus():
-    return GPIO.input(left_sensor)
+    return GPIO.input(leftIR)
 
 #Check status of right IR sensor
 def rightIRstatus():
-    return GPIO.input(right_sensor)
+    return GPIO.input(rightIR)
+
+#Return if robot is in lane or not and where to turn
+def isInLane():
+    leftStatus = GPIO.input(leftIR)
+    rightStatus = GPIO.input(rightIR)
+    inLane = True
+    turnDir = n
+    if (leftStatus==True) || (rightStatus==True):
+        if leftStatus==True:
+		inLane = False
+		turnDir = r
+	elif rightStatus==True:
+		inLane = False
+		turnDir = l
+    return inLane, turnDir
 
 #Test
 try:
