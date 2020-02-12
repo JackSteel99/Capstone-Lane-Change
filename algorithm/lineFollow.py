@@ -2,7 +2,6 @@ import sys
 sys.path.insert(0, '../Hardware/')
 
 from line_tracker import isInLane
-i
 
 while True:
     inLane, turnDir = isInLane()
