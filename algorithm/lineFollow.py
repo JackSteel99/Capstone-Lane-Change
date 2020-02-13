@@ -1,7 +1,9 @@
 import sys
 sys.path.insert(0, '../hardware/')
 
+import motor_lib #includes all functions to control the motor
 from line_tracker import isInLane
+
 
 while True:
     """isInLane(): returns two variables depending on IR sensor readings
@@ -10,11 +12,13 @@ while True:
 
     """
     inLane, turnDir = isInLane()
+    v = 80 # Percentage of power to motors during normal operation
 
-    if(turnDir == r):
-        pass # turn right
-    elif(turnDir == l):
-        pass # turn left
-    else:
-        continue
-
+    if not inLane:
+        if turnDir == r:    # turn right
+            startFWD(v, v-10)
+        elif turnDir == l:  # turn left
+            startFWD(v-10, v)
+        else:
+            startFWD(v, v)
+#end while

@@ -60,97 +60,63 @@ mBspeed = GPIO.PWM(mBePin, pwmFreq) #Mot A speed control variable
 
 #Motor control functions
 #Start going Forward
-def startFWD():
+def startFWD(LW, RW):
+    mAspeed.ChangeDutyCycle(LW)
+    mBspeed.ChangeDutyCycle(RW)
     GPIO.output(mA2, True)
     GPIO.output(mB2, True)
-    return;
+    return(1)
 
 #Stop going Forward
 def stopFWD():
     GPIO.output(mA2, False)
     GPIO.output(mB2, False)
-    return;
+    return(0)
 
 #Start going Backward
-def startBWD():
+def startBWD(LW, RW):
+    mAspeed.ChangeDutyCycle(LW)
+    mBspeed.ChangeDutyCycle(RW)
     GPIO.output(mA1, True)
     GPIO.output(mB1, True)
-    return;
+    return(1)
 
 #Stop going Forward
 def stopBWD():
     GPIO.output(mA1, False)
     GPIO.output(mB1, False)
-    return;
+    return(0)
 
 #Start Left turn
-def startLT():
+def startLT(LW, RW):
+    mAspeed.ChangeDutyCycle(LW)
+    mBspeed.ChangeDutyCycle(RW)
     GPIO.output(mA1, True)
     GPIO.output(mB2, True)
-    return;
+    return(1)
 
 #Stop Left turn
 def stopLT():
     GPIO.output(mA1, False)
     GPIO.output(mB2, False)
-    return;
+    return(0)
 
 #Start Right turn
-def startRT():
+def startRT(LW, RW):
+    mAspeed.ChangeDutyCycle(LW)
+    mBspeed.ChangeDutyCycle(RW)
     GPIO.output(mA2, True)
     GPIO.output(mB1, True)
-    return;
+    return(1)
 
 #Stop Right turn
 def stopRT():
     GPIO.output(mA2, False)
     GPIO.output(mB1, False)
-    return;
+    return(0)
 
-
-#Test (Comment out lines 89-135 when importing to another .py)
-mAspeed.start(0)#Enable speed control and set speed to 0
-mBspeed.start(0)#-----------------''--------------------
-#Forward at 90% speed
-mAspeed.ChangeDutyCycle(90)
-mBspeed.ChangeDutyCycle(90)
-startFWD()
-time.sleep(2)
-stopFWD()
-time.sleep(1)
-#Backward at 45% speed
-mAspeed.ChangeDutyCycle(45)
-mBspeed.ChangeDutyCycle(45)
-startBWD()
-time.sleep(2)
-stopBWD()
-time.sleep(1)
-#Sharp turns at 90% speed
-mAspeed.ChangeDutyCycle(45)
-mBspeed.ChangeDutyCycle(45)
-startLT()
-time.sleep(1)
-stopLT()
-time.sleep(1)
-startRT()
-time.sleep(1)
-stopRT()
-time.sleep(1)
-#Wide right turn going FWD(MotA @ 80%, MotB @ 40%)
-mAspeed.ChangeDutyCycle(90)
-mBspeed.ChangeDutyCycle(40)
-startFWD()
-time.sleep(1)
-stopFWD()
-time.sleep(1)
-#FWD at 70% speed
-mAspeed.ChangeDutyCycle(100)
-mBspeed.ChangeDutyCycle(100)
-startFWD()
-time.sleep(5)
-stopFWD()
-#Disable speed control
-mAspeed.stop()
-mBspeed.stop()
-
-GPIO.cleanup()
+##Disable speed control
+#mAspeed.stop()
+#mBspeed.stop()
+#
+#GPIO.cleanup()
