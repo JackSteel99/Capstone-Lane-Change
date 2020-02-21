@@ -24,7 +24,8 @@ EDP FLC: Dr. Truman Yang
 import RPi.GPIO as GPIO
 import time
 
-'''
+"""
+
 How TCRT5000 works IR Sensor module works;
 The IR emmitter of the TCRT5000 will continously emit an IR beam. Depending on
 the surface in front of it, the IR receiver will either pickup the reflected beam
@@ -37,50 +38,43 @@ Knowing that the right sensor has gone low, means we can move our robot slightly
 bringing the line back in between the sensors.
 
 https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-use-the-tcrt5000-ir-line-follower-sensor-with-the-raspberry-pi
-'''
-
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
-
-#Pin assignments
-leftIR = 24
-rightIR = 25
-
-GPIO.setup(leftIR, GPIO.IN)
-GPIO.setup(rightIR, GPIO.IN)
-
-#Check status of left IR sensor
-def leftIRstatus():
-    return GPIO.input(leftIR)
-
-#Check status of right IR sensor
-def rightIRstatus():
-    return GPIO.input(rightIR)
+"""
 
 #Return if robot is in lane or not and where to turn
 def isInLane():
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setwarnings(False)
+
+    #Pin assignments
+    leftIR = 23
+    rightIR = 24
+
+    GPIO.setup(leftIR, GPIO.IN)
+    GPIO.setup(rightIR, GPIO.IN)
+
     leftStatus = GPIO.input(leftIR)
     rightStatus = GPIO.input(rightIR)
+
     inLane = True
-    turnDir = n
+    turnDir = 'n'
     if (leftStatus==True) or (rightStatus==True):
         if leftStatus==True:
             inLane = False
-            turnDir = r
+            turnDir = 'r'
         elif rightStatus==True:
             inLane = False
-            turnDir = l
+            turnDir = 'l'
     return inLane, turnDir
 
-#Test
-try:
-	while True:
-		if not leftIRstatus():
-			print("Robot is straying off to the right, move left!")
-		elif not rightIRstatus():
-			print("Robot is straying off to the left, move right!")
-		else:
-			print("Following the line!")
-		sleep(0.2)
-except:
-	GPIO.cleanup()
+##Test
+#try:
+#	while True:
+#		if not leftIRstatus():
+#			print("Robot is straying off to the right, move left!")
+#		elif not rightIRstatus():
+#			print("Robot is straying off to the left, move right!")
+#		else:
+#			print("Following the line TEST!")
+#		sleep(0.2)
+#except:
+#	GPIO.cleanup()

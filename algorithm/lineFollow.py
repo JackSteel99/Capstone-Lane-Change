@@ -1,10 +1,14 @@
 import sys
-sys.path.insert(0, '../hardware/')
+#import RPi.GPIO as GPIO
+
+sys.path.insert(0, 'hardware/')
 
 import time                 # TEMP only for demo
-t_end = time.time() + 5     # TEMP only for demo
+t_end = time.time() + 3     # TEMP only for demo
 
-import motor_lib #includes all functions to control the motor
+#GPIO.setmode(GPIO.BOARD)
+
+from motor_lib import * #includes all functions to control the motor
 from line_tracker import isInLane
 
 
@@ -15,17 +19,20 @@ while time.time() < t_end:
 
     """
     inLane, turnDir = isInLane()
-    v = 80 # Percentage of power to motors during normal operation
+    v = 40 # Percentage of power to motors during normal operation
 
     if not inLane:
-        if turnDir == r:    # turn right
+        if turnDir == 'r':    # turn right
             startFWD(v, v-10)
-        elif turnDir == l:  # turn left
+        elif turnDir == 'l':  # turn left
             startFWD(v-10, v)
-        else:
-            startFWD(v, v)
+    else:
+        startFWD(v, v)
 #end while
 
 stopFWD()
+
+mAspeed.stop()
+mBspeed.stop()
 
 GPIO.cleanup()
