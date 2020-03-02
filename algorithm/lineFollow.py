@@ -1,8 +1,9 @@
 import sys
-sys.path.insert(0, '../hardware/')
+sys.path.insert(0, 'hardware/')
 
 import time                 # TEMP only for demo
-t_end = time.time() + 5     # TEMP only for demo
+t_end = time.time() + 3     # TEMP only for demo
+
 
 from motor_lib import Motor #includes all functions to control the motor
 from line_tracker import isInLane
@@ -17,7 +18,7 @@ while time.time() < t_end:
     """
     print("running isInLane()")
     inLane, turnDir = isInLane()
-    v = 80 # Percentage of power to motors during normal operation
+    v = 40 # Percentage of power to motors during normal operation
 
     if not inLane:
         if turnDir == r:    # turn right

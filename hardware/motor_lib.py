@@ -126,8 +126,3 @@ class Motor:
         GPIO.output(mB1, False)
         return(0)
 
-##Disable speed control
-#mAspeed.stop()
-#mBspeed.stop()
-#
-#GPIO.cleanup()
