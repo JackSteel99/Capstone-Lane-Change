@@ -16,6 +16,7 @@ while time.time() < t_end:
     turnDir: l or r chars for which direction the car should turn
 
     """
+    print("running isInLane()")
     inLane, turnDir = isInLane()
     v = 40  # Percentage of power to motors during normal operation
 
