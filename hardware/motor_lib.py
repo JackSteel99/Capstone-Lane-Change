@@ -139,11 +139,12 @@ class Motor:
         rightStatus = GPIO.input(self.rightIR)
         inLane = True
         turnDir = 'n'
-        if (leftStatus==True) or (rightStatus==True):
-            if leftStatus==True:
+        #print(leftStatus, rightStatus) # For debugging
+        if (leftStatus==False) or (rightStatus==False):
+            if leftStatus==False:
                 inLane = False
                 turnDir = 'r'
-            elif rightStatus==True:
+            elif rightStatus==False:
                 inLane = False
                 turnDir = 'l'
         return inLane, turnDir

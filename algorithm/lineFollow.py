@@ -2,20 +2,20 @@ import sys
 sys.path.insert(0, 'hardware/')
 
 import time                 # TEMP only for demo
-t_end = time.time() + 10     # TEMP only for demo
+t_end = time.time() + 3     # TEMP only for demo
 
 from motor_lib import Motor #includes all functions to control the motor
 
 motor = Motor()
 
-#           mode = 0 : No Movement
-#           mode = 1 : Backwards
-#           mode = 2 : Forwards
-#           mode = 3 : Left
-#           mode = 4 : Right
+# mode = 0 : No Movement
+# mode = 1 : Backwards
+# mode = 2 : Forwards
+# mode = 3 : Left
+# mode = 4 : Right
 mode = 0 # Tracks the current mode of the vehicle (explained above)
 
-v = 40  # Percentage of power to motors during normal operation
+v = 50  # Percentage of power to motors during normal operation
 
 while time.time() < t_end:
     """isInLane(): returns two variables depending on IR sensor readings
