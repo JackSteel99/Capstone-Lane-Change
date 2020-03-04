@@ -53,6 +53,33 @@ try:
       print("Car straying left, turning right: Wheel B")
       GPIO.output(mB1, True)
       GPIO.output(mB2, False)
+    
+    """
+    #If above doesn't work, another promising route
+    if(leftIR==False and rightIR==False): #both while move forward     
+        IO.output(4,True) #1A+
+        IO.output(14,False) #1B-
+        IO.output(17,True) #2A+
+        IO.output(18,False) #2B-
+
+    elif(leftIR==True and rightIR==False): #turn right  
+        IO.output(4,True) #1A+
+        IO.output(14,True) #1B-
+        IO.output(17,True) #2A+
+        IO.output(18,False) #2B-
+
+    elif(leftIR==False and rightIR==True): #turn left
+        IO.output(4,True) #1A+
+        IO.output(14,False) #1B-
+        IO.output(17,True) #2A+
+        IO.output(18,True) #2B-
+
+    else:  #stay still
+        IO.output(4,True) #1A+
+        IO.output(14,True) #1B-
+        IO.output(17,True) #2A+
+        IO.output(18,True) #2B-
+    """
 
 finally:
   GPIO.cleanup()
