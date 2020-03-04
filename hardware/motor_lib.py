@@ -39,6 +39,7 @@ https://lastminuteengineers.com/l298n-dc-stepper-driver-arduino-tutorial/
 class Motor:
 
     def __init__(self):
+    #Motor Init
         #Pin Assignments
         self.mA1 = 33  #Mot A IN1
         self.mA2 = 35 #Mot A IN2
@@ -57,27 +58,28 @@ class Motor:
         GPIO.setup(self.mBePin, GPIO.OUT)
         self.mAspeed = GPIO.PWM(self.mAePin, self.pwmFreq) #Mot A speed control variable
         self.mBspeed = GPIO.PWM(self.mBePin, self.pwmFreq) #Mot A speed control variable
+        self.mAspeed.start(0)
+        self.mBspeed.start(0)
+
+    #Line Tracker Init
+        #Pin assignments
+        self.leftIR = 23
+        self.rightIR = 24
+        GPIO.setup(self.leftIR, GPIO.IN)
+        GPIO.setup(self.rightIR, GPIO.IN)
 
     """ Motor control functions
     #       Functions that control the direction each motor is turning, speed is determened by the
     #       parameters given to them.
-    #           return = 0 : No Movement
-    #           return = 1 : Backwards
-    #           return = 2 : Forwards
-    #           return = 3 : Left
-    #           return = 4 : Right
 
     """
     #Start going Forward
     def startFWD(self, LW, RW):
-	print(LW, RW)
-	GPIO.output(self.mA1, False)
-	GPIO.output(self.mB1, False)
-        self.mAspeed.ChangeDutyCycle(40)
-        self.mBspeed.ChangeDutyCycle(40)
+        self.mAspeed.ChangeDutyCycle(LW)
+        self.mBspeed.ChangeDutyCycle(RW)
         GPIO.output(self.mA2, True)
         GPIO.output(self.mB2, True)
-        return(2)
+        return(2);
 
     #Stop going Forward
     def stopFWD(self):
@@ -101,8 +103,8 @@ class Motor:
 
     #Start Left turn
     def startLT(self, LW, RW):
-	GPIO.output(self.mA2, False)
-	GPIO.output(self.mB1, False)
+        GPIO.output(self.mA2, False)
+        GPIO.output(self.mB1, False)
         self.mAspeed.ChangeDutyCycle(LW)
         self.mBspeed.ChangeDutyCycle(RW)
         GPIO.output(self.mA1, True)
@@ -117,8 +119,8 @@ class Motor:
 
     #Start Right turn
     def startRT(self, LW, RW):
-	GPIO.output(self.mA1, False)
-	GPIO.output(self.mB2, False)
+        GPIO.output(self.mA1, False)
+        GPIO.output(self.mB2, False)
         self.mAspeed.ChangeDutyCycle(LW)
         self.mBspeed.ChangeDutyCycle(RW)
         GPIO.output(self.mA2, True)
@@ -131,8 +133,25 @@ class Motor:
         GPIO.output(self.mB1, False)
         return(0)
 
+    #Return if robot is in lane or not and where to turn
+    def isInLane(self):
+        leftStatus = GPIO.input(self.leftIR)
+        rightStatus = GPIO.input(self.rightIR)
+        inLane = True
+        turnDir = 'n'
+        if (leftStatus==True) or (rightStatus==True):
+            if leftStatus==True:
+                inLane = False
+                turnDir = 'r'
+            elif rightStatus==True:
+                inLane = False
+                turnDir = 'l'
+        return inLane, turnDir
+
+
     def exit(self):
-	self.mAspeed.stop()
-	self.mBspeed.stop()
-	GPIO.cleanup()
+        self.mAspeed.stop()
+        self.mBspeed.stop()
+        GPIO.cleanup()
         return(0)
+
