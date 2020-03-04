@@ -108,8 +108,8 @@ def stopRT():
 mAspeed.start(0)#Enable speed control and set speed to 0
 mBspeed.start(0)#-----------------''--------------------
 #Forward at 90% speed
-mAspeed.ChangeDutyCycle(90)
-mBspeed.ChangeDutyCycle(90)
+mAspeed.ChangeDutyCycle(40)
+mBspeed.ChangeDutyCycle(40)
 startFWD()
 time.sleep(2)
 stopFWD()

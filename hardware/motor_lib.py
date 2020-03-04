@@ -36,83 +36,103 @@ car will be running ata relatively low speed.
 Full info about L298N:
 https://lastminuteengineers.com/l298n-dc-stepper-driver-arduino-tutorial/
 '''
+class Motor:
 
-#Pin Assignments
-mA1 = 33  #Mot A IN1
-mA2 = 35 #Mot A IN2
-mB1 = 37 #Mot B IN1
-mB2 = 36 #Mot B IN2
-mAePin = 38 #Mot A PWM Enable Pin
-mBePin = 40 #Mot B PWM Enable Pin
-pwmFreq = 100 #PWM Frequency = 80Hz
+    def __init__(self):
+        #Pin Assignments
+        self.mA1 = 33  #Mot A IN1
+        self.mA2 = 35 #Mot A IN2
+        self.mB1 = 37 #Mot B IN1
+        self.mB2 = 36 #Mot B IN2
+        self.mAePin = 38 #Mot A PWM Enable Pin
+        self.mBePin = 40 #Mot B PWM Enable Pin
+        self.pwmFreq = 100 #PWM Frequency = 80Hz
+        GPIO.setmode(GPIO.BOARD)
+        #Motor init
+        GPIO.setup(self.mA1, GPIO.OUT)
+        GPIO.setup(self.mA2, GPIO.OUT)
+        GPIO.setup(self.mAePin, GPIO.OUT)
+        GPIO.setup(self.mB1, GPIO.OUT)
+        GPIO.setup(self.mB2, GPIO.OUT)
+        GPIO.setup(self.mBePin, GPIO.OUT)
+        self.mAspeed = GPIO.PWM(self.mAePin, self.pwmFreq) #Mot A speed control variable
+        self.mBspeed = GPIO.PWM(self.mBePin, self.pwmFreq) #Mot A speed control variable
 
-GPIO.setmode(GPIO.BOARD)
-#Motor init
-GPIO.setup(mA1, GPIO.OUT)
-GPIO.setup(mA2, GPIO.OUT)
-GPIO.setup(mAePin, GPIO.OUT)
-GPIO.setup(mB1, GPIO.OUT)
-GPIO.setup(mB2, GPIO.OUT)
-GPIO.setup(mBePin, GPIO.OUT)
+    """ Motor control functions
+    #       Functions that control the direction each motor is turning, speed is determened by the
+    #       parameters given to them.
+    #           return = 0 : No Movement
+    #           return = 1 : Backwards
+    #           return = 2 : Forwards
+    #           return = 3 : Left
+    #           return = 4 : Right
 
-mAspeed = GPIO.PWM(mAePin, pwmFreq) #Mot A speed control variable
-mBspeed = GPIO.PWM(mBePin, pwmFreq) #Mot A speed control variable
+    """
+    #Start going Forward
+    def startFWD(self, LW, RW):
+	print(LW, RW)
+	GPIO.output(self.mA1, False)
+	GPIO.output(self.mB1, False)
+        self.mAspeed.ChangeDutyCycle(40)
+        self.mBspeed.ChangeDutyCycle(40)
+        GPIO.output(self.mA2, True)
+        GPIO.output(self.mB2, True)
+        return(2)
 
-#Motor control functions
-#Start going Forward
-def startFWD(LW, RW):
-    mAspeed.ChangeDutyCycle(LW)
-    mBspeed.ChangeDutyCycle(RW)
-    GPIO.output(mA2, True)
-    GPIO.output(mB2, True)
-    return(1)
+    #Stop going Forward
+    def stopFWD(self):
+        GPIO.output(self.mA2, False)
+        GPIO.output(self.mB2, False)
+        return(0)
 
-#Stop going Forward
-def stopFWD():
-    GPIO.output(mA2, False)
-    GPIO.output(mB2, False)
-    return(0)
+    #Start going Backward
+    def startBWD(self, LW, RW):
+        self.mAspeed.ChangeDutyCycle(LW)
+        self.mBspeed.ChangeDutyCycle(RW)
+        GPIO.output(self.mA1, True)
+        GPIO.output(self.mB1, True)
+        return(1)
 
-#Start going Backward
-def startBWD(LW, RW):
-    mAspeed.ChangeDutyCycle(LW)
-    mBspeed.ChangeDutyCycle(RW)
-    GPIO.output(mA1, True)
-    GPIO.output(mB1, True)
-    return(1)
+    #Stop going Forward
+    def stopBWD(self):
+        GPIO.output(self.mA1, False)
+        GPIO.output(self.mB1, False)
+        return(0)
 
-#Stop going Forward
-def stopBWD():
-    GPIO.output(mA1, False)
-    GPIO.output(mB1, False)
-    return(0)
+    #Start Left turn
+    def startLT(self, LW, RW):
+	GPIO.output(self.mA2, False)
+	GPIO.output(self.mB1, False)
+        self.mAspeed.ChangeDutyCycle(LW)
+        self.mBspeed.ChangeDutyCycle(RW)
+        GPIO.output(self.mA1, True)
+        GPIO.output(self.mB2, True)
+        return(3)
 
-#Start Left turn
-def startLT(LW, RW):
-    mAspeed.ChangeDutyCycle(LW)
-    mBspeed.ChangeDutyCycle(RW)
-    GPIO.output(mA1, True)
-    GPIO.output(mB2, True)
-    return(1)
+    #Stop Left turn
+    def stopLT(self):
+        GPIO.output(self.mA1, False)
+        GPIO.output(self.mB2, False)
+        return(0)
 
-#Stop Left turn
-def stopLT():
-    GPIO.output(mA1, False)
-    GPIO.output(mB2, False)
-    return(0)
+    #Start Right turn
+    def startRT(self, LW, RW):
+	GPIO.output(self.mA1, False)
+	GPIO.output(self.mB2, False)
+        self.mAspeed.ChangeDutyCycle(LW)
+        self.mBspeed.ChangeDutyCycle(RW)
+        GPIO.output(self.mA2, True)
+        GPIO.output(self.mB1, True)
+        return(4)
 
-#Start Right turn
-def startRT(LW, RW):
-    mAspeed.ChangeDutyCycle(LW)
-    mBspeed.ChangeDutyCycle(RW)
-    GPIO.output(mA2, True)
-    GPIO.output(mB1, True)
-    return(1)
+    #Stop Right turn
+    def stopRT(self):
+        GPIO.output(self.mA2, False)
+        GPIO.output(self.mB1, False)
+        return(0)
 
-#Stop Right turn
-def stopRT():
-    GPIO.output(mA2, False)
-    GPIO.output(mB1, False)
-    return(0)
-
-
+    def exit(self):
+	self.mAspeed.stop()
+	self.mBspeed.stop()
+	GPIO.cleanup()
+        return(0)
