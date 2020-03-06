@@ -57,6 +57,8 @@ mBspeed = GPIO.PWM(mBePin, pwmFreq) #Mot A speed control variable
 #Motor control functions
 #Start going Forward
 def startFWD():
+    GPIO.output(mA1, False)
+    GPIO.output(mB1, False)
     GPIO.output(mA2, True)
     GPIO.output(mB2, True)
     print(mB2)
@@ -109,8 +111,8 @@ def stopRT():
 mAspeed.start(0)#Enable speed control and set speed to 0
 mBspeed.start(0)#-----------------''--------------------
 #Forward at 90% speed
-mAspeed.ChangeDutyCycle(40)
-mBspeed.ChangeDutyCycle(40)
+mAspeed.ChangeDutyCycle(90)
+mBspeed.ChangeDutyCycle(90)
 startFWD()
 time.sleep(2)
 stopFWD()

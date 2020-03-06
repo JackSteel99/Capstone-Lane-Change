@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, 'hardware/')
 
 import time                 # TEMP only for demo
-t_end = time.time() + 3     # TEMP only for demo
+t_end = time.time() + 10# TEMP only for demo
 
 from motor_lib import Motor #includes all functions to control the motor
 
@@ -13,9 +13,9 @@ motor = Motor()
 # mode = 2 : Forwards
 # mode = 3 : Left
 # mode = 4 : Right
-mode = 0 # Tracks the current mode of the vehicle (explained above)
 
-v = 50  # Percentage of power to motors during normal operation
+v = 90  # Percentage of power to motors during normal operation
+motor.startFWD(v,v)
 
 while time.time() < t_end:
     """isInLane(): returns two variables depending on IR sensor readings
@@ -24,22 +24,20 @@ while time.time() < t_end:
 
     """
     inLane, turnDir = motor.isInLane()
+    #time.sleep(.001)
 
     if not inLane:
-        if turnDir == 'r' and mode != 4:    # turn right
+        if turnDir == 'r':    # turn right
             print("Turn Right")
-            motor.startFWD(v, (v-10))
-            mode = 4
+            motor.startRT(v, (v-10))
 
-        elif turnDir == 'l' and mode != 3:  # turn left
+        elif turnDir == 'l':  # turn left
             print("Turn Left")
-            motor.startFWD((v-10), v)
-            mode = 3
+            motor.startLT((v-10), v)
 
-    elif mode != 2: # Go forward
+    else: # Go forward
         print("All Good")
         motor.startFWD(v, v)
-        mode = 2
 #end while
 
 motor.stopFWD()

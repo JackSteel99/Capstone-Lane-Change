@@ -75,6 +75,8 @@ class Motor:
     """
     #Start going Forward
     def startFWD(self, LW, RW):
+        GPIO.output(self.mA1, False)
+        GPIO.output(self.mB1, False)
         self.mAspeed.ChangeDutyCycle(LW)
         self.mBspeed.ChangeDutyCycle(RW)
         GPIO.output(self.mA2, True)
@@ -140,11 +142,11 @@ class Motor:
         inLane = True
         turnDir = 'n'
         #print(leftStatus, rightStatus) # For debugging
-        if (leftStatus==False) or (rightStatus==False):
-            if leftStatus==False:
+        if (leftStatus==True) or (rightStatus==True):
+            if leftStatus==True:
                 inLane = False
                 turnDir = 'r'
-            elif rightStatus==False:
+            elif rightStatus==True:
                 inLane = False
                 turnDir = 'l'
         return inLane, turnDir
