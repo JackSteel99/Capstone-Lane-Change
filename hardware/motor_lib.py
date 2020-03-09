@@ -141,15 +141,23 @@ class Motor:
         rightStatus = GPIO.input(self.rightIR)
         inLane = True
         turnDir = 'n'
-        #print(leftStatus, rightStatus) # For debugging
-        if (leftStatus==True) or (rightStatus==True):
-            if leftStatus==True:
-                inLane = False
-                turnDir = 'r'
-            elif rightStatus==True:
-                inLane = False
-                turnDir = 'l'
+        #print(leftStatus, rightStatus) # For debuggisng
+        if leftStatus==True and rightStatus==True: # Should only happen when car is held in the air
+            print("Off Track")
+        elif leftStatus==True:
+            inLane = False
+            turnDir = 'r'
+        elif rightStatus==True:
+            inLane = False
+            turnDir = 'l'
+        else:   #It is in the lane
+            pass
         return inLane, turnDir
+
+    def getLeftIR(self):
+        return GPIO.input(self.leftIR)
+    def getRightIR(self):
+        return GPIO.input(sefl.rightIR)
 
 
     def exit(self):
